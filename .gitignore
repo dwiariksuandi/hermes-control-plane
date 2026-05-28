@@ -1,0 +1,116 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Hermes specific
+*.db
+*.log
+*.bak
+backups/
+vault/**/.obsidian/
+vault/**/workspace/
+# Note: We want to keep the vault structure but not the obsidian workspace files and logs.
+# However, we do want to keep the markdown files in vault. So we ignore specific subdirs.
+# Let's be more precise: ignore .obsidian and workspace directories inside vault, but keep .md files.
+# We'll ignore the directories themselves.
+vault/**/.obsidian/
+vault/**/workspace/
+
+# Logs
+logs/
+
+# Cache
+cache/
+
+# Sandboxes
+sandboxes/
+
+# Sessions
+sessions/
+
+# State files (they are large and change frequently)
+state.db
+state.db-shm
+state.db-wal
+
+# Kanban
+kanban.db
+kanban.db-shm
+kanban.db-wal
+
+# Audio and image caches
+audio_cache/
+image_cache/
+
+# Hermes agent internal (if any)
+hermes-agent/
+# But we might want to keep the hermes-agent code? Actually, the .hermes directory contains the hermes-agent repo.
+# We are in /home/hiryu/.hermes, which is the hermes-agent repo. So we should not ignore the entire hermes-agent.
+# Instead, we ignore specific files and directories as above.
+
+# Temporary files
+*.tmp
+*.tempauth.json
+auth.lock

@@ -1,0 +1,5 @@
+User operates as {OWNER} in a containerized Linux environment at /home/hiryu. Prefers "terse caveman" communication style (no articles, fragments OK, [thing] [action] [reason]). Expects Orchestrator to be the stateful top-level process managing a specialist fleet (Scout, Scribe, Reach, Dev).
+§
+User: {OWNER}, containerized Linux /home/hiryu. Communication: terse caveman. Preferences: Orchestrator-managed fleet, physical truth (Vault/disk), minimal inference, structured programmatic telemetry. Behavioral expectations: avoid fluff/pleasantries, fragments OK, structured status reports. Persistent operational context: v5.0 Hyper-Native stack.
+§
+User is bilingual (English/Indonesian). Switches to Indonesian for praise/casual comments. "Lu" = informal "you". Keep responses in English unless user starts in Indonesian. Behavioral: user approves fix proposals before execution on destructive/system-mutate ops. Prefers detect → report → approve → execute flow over autonomous mutation.

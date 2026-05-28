@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HERMES AGENT MISSION CONTROL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@300;400&display=swap');
+        body { background-color: #0a0a1a; color: #e0e0e0; font-family: 'Roboto Mono', monospace; }
+        .cyber-panel { 
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+        .cyber-header {
+            font-weight: 700;
+            color: transparent;
+            background-clip: text;
+            -webkit-background-clip: text;
+            background-image: linear-gradient(to right, #00f0ff, #b026ff);
+            filter: drop-shadow(0 0 8px rgba(0, 240, 255, 0.8));
+            margin-bottom: 1rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .nav-link { transition: all 0.3s ease; border-left: 3px solid transparent; cursor: pointer; }
+        .nav-link:hover, .nav-link.active { background: linear-gradient(90deg, rgba(0,240,255,0.2), transparent); border-left: 3px solid #00f0ff; color: #00f0ff; }
+        .progress-bar-container { background: rgba(0,240,255,0.1); border: 1px solid rgba(0,240,255,0.3); padding: 2px; }
+        .progress-bar { background: linear-gradient(90deg, #b026ff, #00f0ff); box-shadow: 0 0 10px #00f0ff; }
+        .vault-item { cursor: pointer; padding: 4px 8px; border-radius: 4px; transition: background 0.2s; }
+        .vault-item:hover { background: rgba(0,240,255,0.15); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        ::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.3); border-radius: 3px; }
+    </style>
+</head>
+<body class="p-4 overflow-hidden h-screen w-screen flex flex-col">
+    <div class="flex flex-1 h-full">
+        <!-- LEFT SIDEBAR -->
+        <nav class="w-20 flex flex-col items-center py-6 space-y-6 bg-[#0f172a]/80 backdrop-blur-xl border border-[#00f0ff]/40 shadow-[0_0_15px_rgba(0,240,255,0.15)] rounded-xl mr-4 h-full">
+            <i class="fas fa-satellite-dish text-2xl text-[#00f0ff] drop-shadow-[0_0_8px_rgba(0,240,255,0.8)] mb-4"></i>
+            <div class="nav-link active py-4 flex justify-center w-full" onclick="switchTab(event, 'telemetry')" title="Telemetry"><i class="fas fa-tachometer-alt text-xl"></i></div>
+            <div class="nav-link py-4 flex justify-center w-full" onclick="switchTab(event, 'fleet')" title="Fleet"><i class="fas fa-users-cog text-xl"></i></div>
+            <div class="nav-link py-4 flex justify-center w-full" onclick="switchTab(event, 'vault')" title="Vault"><i class="fas fa-folder-open text-xl"></i></div>
+            <div class="nav-link py-4 flex justify-center w-full" onclick="switchTab(event, 'settings')" title="System Settings"><i class="fas fa-shield-halved text-xl"></i></div>
+        </nav>
+
+        <div class="flex-1 flex flex-col h-full overflow-hidden">
+            <!-- TOP HEADER -->
+            <header class="flex justify-between items-center bg-[#0f172a]/80 backdrop-blur-xl border border-[#00f0ff]/40 shadow-[0_0_15px_rgba(0,240,255,0.15)] rounded-xl p-4 mb-4 flex-none">
+                <h1 class="text-2xl cyber-header !mb-0 tracking-wider">HERMES MISSION CONTROL</h1>
+                <div class="px-4 py-1 border border-green-400 rounded-full shadow-[0_0_10px_rgba(74,222,128,0.5)] bg-green-400/10">
+                    <span id="system-status" class="text-green-400 font-bold text-sm tracking-widest animate-pulse">CONNECTING...</span>
+                </div>
+            </header>
+
+            <!-- TAB: TELEMETRY (Overview) -->
+            <div id="tab-telemetry" class="tab-panel flex-1 flex flex-col gap-4 overflow-hidden h-full">
+                <!-- ROW 1: 3 Columns -->
+                <div class="grid grid-cols-3 gap-4 h-[40%] flex-none">
+                    <div class="col-span-1 cyber-panel flex flex-col items-center justify-center !p-4">
+                        <h2 class="cyber-header text-sm">MISSION RADAR</h2>
+                        <div class="flex-1 w-full relative"><canvas id="missionRadar"></canvas></div>
+                    </div>
+                    <div class="col-span-1 cyber-panel flex flex-col !p-4">
+                        <h2 class="cyber-header text-sm">CURRENT DIRECTIVE</h2>
+                        <div class="space-y-4 flex-1">
+                            <div>
+                                <p class="text-xs mb-1 text-slate-300 font-semibold tracking-wider">Context Window</p>
+                                <div class="progress-bar-container rounded-full"><div class="progress-bar h-2 rounded-full" style="width:75%"></div></div>
+                            </div>
+                            <div class="mt-4 p-3 bg-black/40 border border-[#b026ff]/30 rounded text-xs text-slate-300 shadow-[0_0_10px_rgba(176,38,255,0.1)]">
+                                <span class="text-[#00f0ff] font-bold">STATUS:</span> IDLE<br/>
+                                <span class="text-[#00f0ff] font-bold">MODE:</span> AUTO-OBSERVATION
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-span-1 cyber-panel flex flex-col !p-4">
+                        <h2 class="cyber-header text-sm">VPS HEALTH</h2>
+                        <div id="system-health-bars" class="space-y-3 flex-1">
+                            <!-- Populated by WS -->
+                        </div>
+                    </div>
+                </div>
+                <!-- ROW 2: Activity Table (Full Width) -->
+                <div class="cyber-panel flex-1 flex flex-col !p-0 overflow-hidden mb-2">
+                    <div class="p-3 border-b border-[#00f0ff]/20 bg-black/20 flex justify-between items-center">
+                        <h2 class="cyber-header text-sm !mb-0">LIVE ACTIVITY LOG</h2>
+                        <div class="flex gap-2">
+                            <span class="text-[10px] bg-green-400/10 text-green-400 px-2 py-1 rounded border border-green-400/30 tracking-widest font-bold">API: LIVE</span>
+                            <span class="text-[10px] bg-green-400/10 text-green-400 px-2 py-1 rounded border border-green-400/30 tracking-widest font-bold">WS: STREAMING</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 overflow-y-auto p-4">
+                        <table class="w-full text-left text-xs font-mono">
+                            <thead class="border-b border-[#00f0ff]/30 text-slate-400">
+                                <tr>
+                                    <th class="p-2 w-40 tracking-wider">TIMESTAMP</th>
+                                    <th class="p-2 w-32 tracking-wider">AGENT</th>
+                                    <th class="p-2 tracking-wider">TASK SUMMARY</th>
+                                    <th class="p-2 w-24 tracking-wider">STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="log-table-body" class="divide-y divide-[#00f0ff]/10">
+                                <tr><td colspan="4" class="p-4 text-center text-slate-500">Awaiting telemetry...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: FLEET -->
+            <div id="tab-fleet" class="tab-panel flex-1 hidden h-full overflow-hidden pb-2">
+                <div class="cyber-panel h-full overflow-y-auto">
+                    <h2 class="cyber-header text-xl">AGENT FLEET</h2>
+                    <div id="fleet-cards" class="grid grid-cols-2 gap-6"></div>
+                </div>
+            </div>
+
+            <!-- TAB: VAULT EXPLORER -->
+            <div id="tab-vault" class="tab-panel flex-1 hidden h-full overflow-hidden pb-2">
+                <div class="flex h-full gap-4">
+                    <div class="w-1/3 cyber-panel flex flex-col !p-0">
+                        <h2 class="cyber-header text-sm p-4 border-b border-[#00f0ff]/20 bg-black/20 !mb-0">VAULT TREE</h2>
+                        <div id="vault-tree" class="text-xs p-4 flex-1 overflow-y-auto font-mono"></div>
+                    </div>
+                    <div class="flex-1 cyber-panel flex flex-col !p-0">
+                        <h2 class="cyber-header text-sm p-4 border-b border-[#00f0ff]/20 bg-black/20 !mb-0">FILE VIEWER</h2>
+                        <pre id="vault-content" class="text-[11px] text-[#00f0ff] whitespace-pre-wrap break-words font-mono bg-[#0a0a1a] p-4 flex-1 overflow-y-auto m-4 rounded border border-[#00f0ff]/20 shadow-inner">Select a file from the tree to view its contents.</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: SYSTEM SETTINGS -->
+            <div id="tab-settings" class="tab-panel flex-1 hidden h-full overflow-hidden pb-2">
+                <div class="cyber-panel h-full overflow-y-auto">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="cyber-header text-xl !mb-0">SYSTEM SETTINGS</h2>
+                        <span class="text-green-400 font-bold border border-green-400/50 px-3 py-1 rounded-full shadow-[0_0_10px_rgba(74,222,128,0.3)] bg-green-400/10 tracking-widest text-xs">SECURE LINK ESTABLISHED</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="p-4 bg-black/30 border border-[#00f0ff]/30 rounded-lg">
+                            <p class="text-xs text-slate-400 tracking-widest mb-1">ENCRYPTION</p>
+                            <p class="text-[#00f0ff] font-bold text-xl drop-shadow-[0_0_5px_rgba(0,240,255,0.8)]">AES-256</p>
+                        </div>
+                        <div class="p-4 bg-black/30 border border-[#00f0ff]/30 rounded-lg">
+                            <p class="text-xs text-slate-400 tracking-widest mb-1">NODE</p>
+                            <p class="text-[#00f0ff] font-bold text-xl drop-shadow-[0_0_5px_rgba(0,240,255,0.8)]">HERMES-CORE-01</p>
+                        </div>
+                        <div class="p-4 bg-black/30 border border-[#00f0ff]/30 rounded-lg">
+                            <p class="text-xs text-slate-400 tracking-widest mb-1">REGION</p>
+                            <p class="text-[#00f0ff] font-bold text-xl drop-shadow-[0_0_5px_rgba(0,240,255,0.8)]">LOCAL-SECURE</p>
+                        </div>
+                        <div class="p-4 bg-black/30 border border-[#00f0ff]/30 rounded-lg">
+                            <p class="text-xs text-slate-400 tracking-widest mb-1">VAULT ACCESS</p>
+                            <p class="text-[#00f0ff] font-bold text-xl drop-shadow-[0_0_5px_rgba(0,240,255,0.8)]">READ-GUARDED</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-6 bg-black/30 border border-[#00f0ff]/30 rounded-lg">
+                        <h3 class="cyber-header text-sm tracking-widest">SECURITY METRICS</h3>
+                        <ul class="text-sm space-y-3 text-slate-300 font-mono">
+                            <li class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-green-400 animate-pulse shadow-[0_0_5px_rgba(74,222,128,0.8)]"></div> Redaction Engine: ACTIVE</li>
+                            <li class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-green-400 animate-pulse shadow-[0_0_5px_rgba(74,222,128,0.8)]"></div> Path Traversal Guard: ACTIVE</li>
+                            <li class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-green-400 animate-pulse shadow-[0_0_5px_rgba(74,222,128,0.8)]"></div> Detached Daemon Mode: ACTIVE</li>
+                            <li class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-green-400 animate-pulse shadow-[0_0_5px_rgba(74,222,128,0.8)]"></div> Local Vault Source of Truth: ACTIVE</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+// === ROUTING FIX: ABSOLUTE BASE URLs ===
+const API_BASE = "http://localhost:8000";
+const WS_BASE = "ws://localhost:8000";
+
+// === TAB SWITCHING ===
+function switchTab(evt, name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+    document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.remove('hidden');
+    
+    if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.add('active');
+    } else {
+        const targetNav = document.querySelector(`.nav-link[onclick*="switchTab(event, '${name}')"]`);
+        if(targetNav) targetNav.classList.add('active');
+    }
+    
+    if (name === 'vault') loadVaultTree();
+    if (name === 'fleet') loadFleet();
+}
+
+// === WEBSOCKET ===
+function connectWebSocket() {
+    const ws = new WebSocket(WS_BASE + '/ws/telemetry');
+    ws.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        const h = data.system_health || {};
+        const container = document.getElementById('system-health-bars');
+        if (container) {
+            container.innerHTML = `
+                <div>
+                    <div class="flex justify-between text-xs mb-1 font-mono"><span class="text-[#00f0ff] font-bold">CPU</span><span class="text-slate-300">${h.cpu||0}%</span></div>
+                    <div class="progress-bar-container rounded-full"><div class="progress-bar h-1.5 rounded-full" style="width:${h.cpu||0}%"></div></div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs mb-1 font-mono"><span class="text-[#00f0ff] font-bold">RAM</span><span class="text-slate-300">${h.ram||0}%</span></div>
+                    <div class="progress-bar-container rounded-full"><div class="progress-bar h-1.5 rounded-full" style="width:${h.ram||0}%"></div></div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs mb-1 font-mono"><span class="text-[#00f0ff] font-bold">DISK</span><span class="text-slate-300">${h.disk||0}%</span></div>
+                    <div class="progress-bar-container rounded-full"><div class="progress-bar h-1.5 rounded-full" style="width:${h.disk||0}%"></div></div>
+                </div>
+            `;
+        }
+        const tbody = document.getElementById('log-table-body');
+        if (tbody) {
+            const logs = data.logs || [];
+            if (logs.length > 0) {
+                tbody.innerHTML = logs.map(log => `
+                    <tr class="hover:bg-white/5 transition-colors">
+                        <td class="p-2 text-slate-400 border-b border-[#00f0ff]/5">${(log.timestamp || '').replace('T', ' ').substring(0, 19)}</td>
+                        <td class="p-2 font-bold text-[#b026ff] drop-shadow-[0_0_5px_rgba(176,38,255,0.8)] border-b border-[#00f0ff]/5">${log.agent_name||''}</td>
+                        <td class="p-2 text-slate-200 border-b border-[#00f0ff]/5 truncate max-w-sm" title="${log.task_summary||''}">${log.task_summary||''}</td>
+                        <td class="p-2 ${(log.status||'').toLowerCase().includes('success')?'text-green-400':'text-red-400'} uppercase font-bold border-b border-[#00f0ff]/5">${log.status||''}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+        const statusEl = document.getElementById('system-status');
+        if(statusEl) {
+            statusEl.textContent = 'SYSTEM ONLINE';
+            statusEl.classList.remove('text-red-400');
+            statusEl.classList.add('text-green-400');
+        }
+    };
+    ws.onerror = () => { 
+        const statusEl = document.getElementById('system-status');
+        if(statusEl) {
+            statusEl.textContent = 'OFFLINE - RECONNECTING...';
+            statusEl.classList.remove('text-green-400');
+            statusEl.classList.add('text-red-400');
+        }
+    };
+    ws.onclose = () => {
+        setTimeout(connectWebSocket, 5000);
+    };
+}
+
+// === RADAR CHART ===
+function initRadar() {
+    const ctx = document.getElementById('missionRadar');
+    if(!ctx) return;
+    new Chart(ctx.getContext('2d'), {
+        type: 'radar',
+        data: { 
+            labels: ['Plan','Exec','Learn','Adapt','Stealth','Effic'], 
+            datasets: [{ 
+                data: [90,85,75,95,60,88], 
+                backgroundColor: 'rgba(0, 240, 255, 0.2)', 
+                borderColor: '#00f0ff', 
+                pointBackgroundColor: '#00f0ff',
+                borderWidth: 2,
+            }] 
+        },
+        options: { 
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { 
+                r: { 
+                    angleLines: { color: 'rgba(0,240,255,0.2)' }, 
+                    grid: { color: 'rgba(0,240,255,0.2)' }, 
+                    pointLabels: { color: '#00f0ff', font: { size: 9, family: "'Orbitron', sans-serif" } }, 
+                    ticks: { display: false, backdropColor: 'transparent' } 
+                } 
+            }, 
+            plugins: { legend: { display: false } } 
+        }
+    });
+}
+
+// === VAULT EXPLORER ===
+function renderTree(node, path, container) {
+    const sorted = Object.entries(node).sort((a, b) => {
+        const aDir = typeof a[1] === 'object';
+        const bDir = typeof b[1] === 'object';
+        if (aDir !== bDir) return bDir - aDir;
+        return a[0].localeCompare(b[0]);
+    });
+    for (const [name, value] of sorted) {
+        const isDir = typeof value === 'object';
+        const fullPath = path ? path + '/' + name : name;
+        const item = document.createElement('div');
+        item.className = 'vault-item flex items-center gap-2 py-1.5';
+        if (isDir) {
+            item.innerHTML = `<i class="fas fa-folder text-[#b026ff] drop-shadow-[0_0_3px_rgba(176,38,255,0.8)]"></i><span class="font-bold text-slate-300 text-[11px] tracking-wider uppercase">${name}</span>`;
+            const childContainer = document.createElement('div');
+            childContainer.className = 'ml-4 hidden border-l border-[#b026ff]/30 pl-2 mt-1';
+            item.onclick = (e) => { e.stopPropagation(); childContainer.classList.toggle('hidden'); };
+            renderTree(value, fullPath, childContainer);
+            item.appendChild(childContainer);
+        } else {
+            item.innerHTML = `<i class="fas fa-file-code text-[#00f0ff] drop-shadow-[0_0_3px_rgba(0,240,255,0.8)]"></i><span class="text-slate-400 hover:text-[#00f0ff] transition-colors">${name}</span>`;
+            item.onclick = (e) => { e.stopPropagation(); loadFile(fullPath); };
+        }
+        container.appendChild(item);
+    }
+}
+
+async function loadVaultTree() {
+    try {
+        const res = await fetch(API_BASE + '/api/vault/tree');
+        if (!res.ok) throw new Error('Failed to fetch');
+        const tree = await res.json();
+        const container = document.getElementById('vault-tree');
+        container.innerHTML = '';
+        renderTree(tree, '', container);
+    } catch (err) {
+        document.getElementById('vault-tree').innerHTML = '<p class="text-red-400 p-2 font-bold uppercase tracking-widest">Error loading vault tree: ' + err.message + '</p>';
+    }
+}
+
+async function loadFile(path) {
+    try {
+        document.getElementById('vault-content').innerHTML = '<span class="text-slate-500 animate-pulse">Decrypting block...</span>';
+        const res = await fetch(API_BASE + '/api/vault/file?path=' + encodeURIComponent(path));
+        if (!res.ok) throw new Error('Failed to load file');
+        const data = await res.json();
+        document.getElementById('vault-content').textContent = data.content || '(empty file)';
+    } catch (err) {
+        document.getElementById('vault-content').innerHTML = '<span class="text-red-400 font-bold uppercase tracking-widest">Error loading file: ' + err.message + '</span>';
+    }
+}
+
+// === FLEET TAB ===
+async function loadFleet() {
+    try {
+        const res = await fetch(API_BASE + '/api/fleet');
+        if(!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        const cards = document.getElementById('fleet-cards');
+        const agents = data.agents || [];
+        cards.innerHTML = agents.map(a => `
+            <div class="p-6 bg-black/30 border border-[#00f0ff]/30 rounded-xl hover:border-[#00f0ff]/80 transition-colors shadow-[0_0_10px_rgba(0,240,255,0.05)] hover:shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+                <div class="flex items-center gap-3 mb-4 border-b border-[#00f0ff]/20 pb-3">
+                    <div class="w-4 h-4 rounded-full bg-[#00f0ff] shadow-[0_0_10px_rgba(0,240,255,0.8)] animate-pulse"></div>
+                    <h3 class="cyber-header text-xl !mb-0 tracking-widest">${a.name.toUpperCase()}</h3>
+                </div>
+                <div class="space-y-4">
+                    <div><p class="text-[10px] text-slate-500 tracking-widest uppercase mb-1">Specialization</p><p class="text-sm text-slate-300">${a.role}</p></div>
+                    <div><p class="text-[10px] text-slate-500 tracking-widest uppercase mb-1">Current Status</p><p class="text-sm text-green-400 font-bold drop-shadow-[0_0_5px_rgba(74,222,128,0.5)] uppercase tracking-wider">${a.status}</p></div>
+                    <div><p class="text-[10px] text-slate-500 tracking-widest uppercase mb-1">Last Task</p><p class="text-xs text-[#b026ff] font-mono break-words">${a.last_task}</p></div>
+                </div>
+            </div>
+        `).join('');
+    } catch (err) {
+        document.getElementById('fleet-cards').innerHTML = '<p class="text-red-400 col-span-2 font-bold uppercase tracking-widest">Error loading fleet status from API: ' + err.message + '</p>';
+    }
+}
+
+// === INIT ===
+document.addEventListener('DOMContentLoaded', () => {
+    initRadar();
+    connectWebSocket();
+    loadFleet();
+    loadVaultTree();
+});
+</script>
+</body>
+</html>
