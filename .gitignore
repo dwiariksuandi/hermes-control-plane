@@ -117,3 +117,5 @@ auth.lock
 auth.json
 */auth.json
 channel_directory.json
+bin/
+processes.json
