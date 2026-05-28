@@ -114,3 +114,5 @@ hermes-agent/
 *.tmp
 *.tempauth.json
 auth.lock
+auth.json
+*/auth.json
