@@ -1,0 +1,8 @@
+build-essential
+git
+curl
+unzip
+nodejs
+npm
+python3-pip
+python3-venv
