@@ -147,13 +147,13 @@
     "created_at": "2026-05-27T20:21:46.300157+00:00",
     "created_by": "agent",
     "last_patched_at": "2026-05-27T20:22:27.982282+00:00",
-    "last_used_at": "2026-05-29T20:52:17.106515+00:00",
-    "last_viewed_at": "2026-05-29T20:52:17.099096+00:00",
+    "last_used_at": "2026-05-29T22:37:00.253894+00:00",
+    "last_viewed_at": "2026-05-29T22:37:00.252065+00:00",
     "patch_count": 1,
     "pinned": false,
     "state": "active",
-    "use_count": 2,
-    "view_count": 2
+    "use_count": 3,
+    "view_count": 3
   },
   "secure-agent-ops-lifecycle": {
     "archived_at": null,

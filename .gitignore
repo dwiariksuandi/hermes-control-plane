@@ -110,6 +110,11 @@ hermes-agent/
 # We are in /home/hiryu/.hermes, which is the hermes-agent repo. So we should not ignore the entire hermes-agent.
 # Instead, we ignore specific files and directories as above.
 
+# Language server and MCP server dependencies (large, regenerable)
+lsp/node_modules/
+mcp_servers/*/venv/
+mcp_servers/*/node_modules/
+
 # Temporary files
 *.tmp
 *.tempauth.json
