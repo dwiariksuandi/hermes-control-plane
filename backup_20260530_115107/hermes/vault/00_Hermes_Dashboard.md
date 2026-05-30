@@ -1,0 +1,28 @@
+---
+name: Hermes Dashboard
+description: Agent state — auto-refreshed daily
+created: 2026-05-30 11:25
+---
+
+# 00 Hermes Dashboard
+
+| Metric | Value |
+|--------|-------|
+| Last dashboard refresh | 2026-05-30 11:25 |
+| Last memory sync | 2026-05-29 17:40 |
+| Active learnings | 3 |
+| Active projects | 0 |
+| Vault root | /home/hiryu/.hermes/vault |
+
+## Quick Links
+
+- [[MEMORY.md]] — persistent agent memory
+- [[USER.md]] — user profile
+- [[self-learning/learnings.md]] — accumulated insights
+- [[self-learning/digests/]] — weekly digests
+
+## Active Projects
+
+_Listed from vault/projects/_
+
+*None yet. Create notes under vault/projects/*\n
