@@ -1,0 +1,17 @@
+[INFO] time: 2026-05-30T10:19:27-04:00
+[INFO] check: hermes mcp list
+
+  MCP Servers:
+
+  Name             Transport                      Tools        Status    
+  ──────────────── ────────────────────────────── ──────────── ──────────
+  filesystem       npx -y @modelcontextproto...   all          ✓ enabled
+  github           npx -y @modelcontextproto...   all          ✓ enabled
+  time             uvx mcp-server-time            all          ✓ enabled
+  composio         https://connect.composio....   all          ✓ enabled
+
+
+[INFO] status: COMPOSIO_MCP_TOOLS (verified via MCP tool calls in Hermes)
+[PASS] GITHUB_LIST_REPOSITORIES_FOR_THE_AUTHENTICATED_USER - last tested OK
+[PASS] GITHUB_GET_THE_AUTHENTICATED_USER - last tested OK
+[NOTE] Run hermes mcp test composio for live test
