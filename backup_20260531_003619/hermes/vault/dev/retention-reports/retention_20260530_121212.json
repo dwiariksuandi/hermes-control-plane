@@ -1,0 +1,85 @@
+{
+  "report_id": "20260530_121212",
+  "generated_at": "2026-05-30T12:12:12.529764",
+  "dry_run": true,
+  "duration_seconds": 0.001447,
+  "hostname": "Hiryu",
+  "total_items_scanned": 3,
+  "total_deleted": 0,
+  "total_space_freed_bytes": 0,
+  "total_space_freed_human": "0.0 B",
+  "categories": [
+    {
+      "category": "local_backups",
+      "dir": "/home/hiryu/.hermes/backups",
+      "retention_days": 7,
+      "min_keep": 2,
+      "total_items": 0,
+      "eligible_for_deletion": 0,
+      "deleted": 0,
+      "space_freed_bytes": 0,
+      "items": [],
+      "status": "dry_run"
+    },
+    {
+      "category": "backup_manifests",
+      "dir": "/home/hiryu/.hermes/vault/dev/backup-manifests",
+      "retention_days": 90,
+      "min_keep": 5,
+      "total_items": 1,
+      "eligible_for_deletion": 0,
+      "deleted": 0,
+      "space_freed_bytes": 0,
+      "items": [],
+      "status": "dry_run"
+    },
+    {
+      "category": "vault_logs",
+      "dir": "/home/hiryu/.hermes/vault/logs",
+      "retention_days": 30,
+      "min_keep": 2,
+      "total_items": 0,
+      "eligible_for_deletion": 0,
+      "deleted": 0,
+      "space_freed_bytes": 0,
+      "items": [],
+      "status": "dry_run"
+    },
+    {
+      "category": "weekly_digests",
+      "dir": "/home/hiryu/.hermes/vault/self-learning/digests",
+      "retention_days": 365,
+      "min_keep": 4,
+      "total_items": 2,
+      "eligible_for_deletion": 0,
+      "deleted": 0,
+      "space_freed_bytes": 0,
+      "items": [],
+      "status": "dry_run"
+    },
+    {
+      "category": "state_snapshots",
+      "dir": "/home/hiryu/.hermes/state-snapshots",
+      "retention_days": 30,
+      "min_keep": 2,
+      "total_items": 0,
+      "eligible_for_deletion": 0,
+      "deleted": 0,
+      "space_freed_bytes": 0,
+      "items": [],
+      "status": "dry_run"
+    },
+    {
+      "category": "curator_backups",
+      "dir": "/home/hiryu/.hermes/skills/backups",
+      "retention_days": 90,
+      "min_keep": 3,
+      "total_items": 0,
+      "eligible_for_deletion": 0,
+      "deleted": 0,
+      "space_freed_bytes": 0,
+      "items": [],
+      "status": "dir_not_found"
+    }
+  ]
+}

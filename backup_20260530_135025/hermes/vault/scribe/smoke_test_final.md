@@ -1,1 +1,0 @@
----\nauthor: Scribe\ntag: #smoke-test\n---\n- Easy to read and write in plain text\n- Portable across platforms and tools\n- Converts quickly to HTML, PDF, and other formats

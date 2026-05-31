@@ -1,3 +1,0 @@
-- Easy to read and write in plain text
-- Portable across platforms and tools
-- Converts quickly to HTML, PDF, and other formats
