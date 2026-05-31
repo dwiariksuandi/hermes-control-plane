@@ -1,0 +1,98 @@
+{
+  "backup_id": "20260531_001506",
+  "created": "2026-05-31T00:15:06.877153",
+  "hostname": "Hiryu",
+  "hermes_version": "3.0.0",
+  "items": [
+    {
+      "source": "/home/hiryu/.hermes/config.yaml",
+      "destination": "/home/hiryu/.hermes/backups/backup_20260531_001506/hermes/config.yaml",
+      "description": "Hermes main config",
+      "size_bytes": 14113,
+      "size_human": "13.8 KB"
+    },
+    {
+      "source": "/home/hiryu/.hermes/.env",
+      "destination": "/home/hiryu/.hermes/backups/backup_20260531_001506/hermes/.env",
+      "description": "Environment variables",
+      "size_bytes": 23482,
+      "size_human": "22.9 KB"
+    },
+    {
+      "source": "/home/hiryu/.hermes/MEMORY.md",
+      "destination": "/home/hiryu/.hermes/backups/backup_20260531_001506/hermes/MEMORY.md",
+      "description": "Agent memory",
+      "size_bytes": 79,
+      "size_human": "79.0 B"
+    },
+    {
+      "source": "/home/hiryu/.hermes/USER.md",
+      "destination": "/home/hiryu/.hermes/backups/backup_20260531_001506/hermes/USER.md",
+      "description": "User profile",
+      "size_bytes": 97,
+      "size_human": "97.0 B"
+    },
+    {
+      "source": "/home/hiryu/.hermes/auth.json",
+      "destination": "/home/hiryu/.hermes/backups/backup_20260531_001506/hermes/auth.json",
+      "description": "Auth tokens (encrypted)",
+      "size_bytes": 117,
+      "size_human": "117.0 B"
+    },
+    {
+      "source": "/home/hiryu/.hermes/configs",
+      "destination": "/home/hiryu/.hermes/backups/backup_20260531_001506/hermes/configs",
+      "description": "Config folder",
+      "size_bytes": 29357,
+      "size_human": "28.7 KB"
+    },
+    {
+      "source": "/home/hiryu/.hermes/skills",
+      "destination": "/home/hiryu/.hermes/backups/backup_20260531_001506/hermes/skills",
+      "description": "Skills repo",
+      "size_bytes": 6389313,
+      "size_human": "6.1 MB"
+    },
+    {
+      "source": "/home/hiryu/.hermes/vault",
+      "destination": "/home/hiryu/.hermes/backups/backup_20260531_001506/hermes/vault",
+      "description": "Obsidian vault",
+      "size_bytes": 714312,
+      "size_human": "697.6 KB"
+    },
+    {
+      "source": "/home/hiryu/.hermes/scripts",
+      "destination": "/home/hiryu/.hermes/backups/backup_20260531_001506/hermes/scripts",
+      "description": "Custom scripts",
+      "size_bytes": 90600,
+      "size_human": "88.5 KB"
+    },
+    {
+      "source": "/home/hiryu/.hermes/state.db",
+      "destination": "/home/hiryu/.hermes/backups/backup_20260531_001506/hermes/state.db",
+      "description": "Session DB",
+      "size_bytes": 46780416,
+      "size_human": "44.6 MB"
+    }
+  ],
+  "total_items": 10,
+  "total_size_bytes": 54041886,
+  "total_size_human": "51.5 MB",
+  "excluded_patterns": [
+    ".git/",
+    "node_modules/",
+    "__pycache__/",
+    "venv/",
+    ".venv/",
+    "*.pyc",
+    ".cache/",
+    "hermes-agent/",
+    "state-snapshots/",
+    "sessions/",
+    "audio_cache/",
+    "image_cache/",
+    "cache/",
+    "backups/",
+    "hermes_keys/"
+  ]
+}
